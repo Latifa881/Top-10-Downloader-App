@@ -10,22 +10,19 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
-import java.net.MalformedURLException
 import java.net.URL
 
-class MainActivity : AppCompatActivity() {
+class Top100AppActivity : AppCompatActivity() {
     lateinit var rvMain: RecyclerView
     lateinit var btGetData: Button
     var appsDetails = ArrayList<Details>()
-    val rssURL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml"
+    val rssURL =
+        "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=100/xml"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_top100_app)
         rvMain = findViewById(R.id.rvMain)
         btGetData = findViewById(R.id.btGetData)
         btGetData.setOnClickListener {
@@ -46,48 +43,50 @@ class MainActivity : AppCompatActivity() {
 
             if (rssFeed.isEmpty()) {
                 Log.e("TAG", "requestApi fun: Error downloading")
-            }
-            else{
-                withContext(Dispatchers.Main){
+            } else {
+                withContext(Dispatchers.Main) {
                     rvMain.adapter = RecyclerViewAdapter(appsDetails)
-                    rvMain.layoutManager = LinearLayoutManager(this@MainActivity)
+                    rvMain.layoutManager = LinearLayoutManager(this@Top100AppActivity)
                 }
 
             }
 
         }
     }
+
     fun getXMLData(urlPath: String?): ArrayList<Details> {
         val parser = XMLParser()
 
-            val url = URL(urlPath)
-            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val response = connection.responseCode
-            Log.d("TAG", "downloadXML: The response code was $response")
+        val url = URL(urlPath)
+        val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
+        val response = connection.responseCode
+        Log.d("TAG", "downloadXML: The response code was $response")
 
-            appsDetails =
-                connection.getInputStream()?.let {
-                    parser.parse(it)
-                }
-                        as ArrayList<Details>
+        appsDetails =
+            connection.getInputStream()?.let {
+                parser.parse(it)
+            }
+                    as ArrayList<Details>
 
 
-            return appsDetails
+        return appsDetails
 
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.top10 -> {
-               val intent= Intent(this,MainActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 return true
             }
             R.id.top100 -> {
-                val intent= Intent(this,Top100AppActivity::class.java)
+                val intent = Intent(this, Top100AppActivity::class.java)
                 startActivity(intent)
                 return true
             }
@@ -95,7 +94,4 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
-
-
-
 

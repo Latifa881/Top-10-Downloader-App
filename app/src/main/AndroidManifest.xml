@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.top10downloaderapp">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Top10DownloaderApp">
+        android:theme="@style/Theme.Top10DownloaderApp"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Top100AppActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

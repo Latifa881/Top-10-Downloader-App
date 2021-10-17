@@ -38,8 +38,20 @@ class RecyclerViewAdapter ( val details: ArrayList<Details>) :
                 val dialogView = LayoutInflater.from(context).inflate(R.layout.dialogue_view, null)
                 builder.setView(dialogView)
                 dialogView.tvTitle.text=data.title
-                Log.d("MY TAG",data.summary.toString())
 
+                dialogView.tvSummary.text= data.summary
+                dialogView.tvSummary.visibility= View.GONE
+                dialogView.scrollable.visibility= View.GONE
+                dialogView.ivSummary.setOnClickListener {
+                    if(dialogView.tvSummary.visibility== View.VISIBLE){
+                        dialogView.tvSummary.visibility= View.GONE
+                        dialogView.scrollable.visibility= View.GONE
+                        Log.d("MY TAG",data.summary.toString())
+                    }else{
+                        dialogView.tvSummary.visibility= View.VISIBLE
+                        dialogView.scrollable.visibility= View.VISIBLE
+                    }
+                }
                 try {
                     dialogView.ivLink.setOnClickListener {
                         var  uri = Uri.parse(data.ID)
