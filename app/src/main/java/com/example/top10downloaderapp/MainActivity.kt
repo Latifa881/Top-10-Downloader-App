@@ -28,15 +28,13 @@ class MainActivity : AppCompatActivity() {
         btGetData.setOnClickListener {
             requestApi(rssURL)
 
-            rvMain.adapter = RecyclerViewAdapter(appsDetails)
-            rvMain.layoutManager = LinearLayoutManager(this@MainActivity)
+
         }
     }
 
     fun requestApi(url: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
-
 
             val rssFeed = async {
 
@@ -47,14 +45,19 @@ class MainActivity : AppCompatActivity() {
             if (rssFeed.isEmpty()) {
                 Log.e("TAG", "requestApi fun: Error downloading")
             }
+            else{
+                withContext(Dispatchers.Main){
+                    rvMain.adapter = RecyclerViewAdapter(appsDetails)
+                    rvMain.layoutManager = LinearLayoutManager(this@MainActivity)
+                }
+
+            }
 
         }
     }
-    fun getXMLData(urlPath: String?): String {
-        val xmlResult = StringBuilder()
+    fun getXMLData(urlPath: String?): ArrayList<Details> {
         val parser = XMLParser()
 
-        try {
             val url = URL(urlPath)
             val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
             val response = connection.responseCode
@@ -66,13 +69,9 @@ class MainActivity : AppCompatActivity() {
                 }
                         as ArrayList<Details>
 
-            Log.d("TAG", "Received ${xmlResult.length} bytes")
-            return xmlResult.toString()
 
-        } catch (e: Exception) {
-            Log.e("TAG", "downloadXML: Invalid URL ${e.message}")
-        }
-        return ""
+            return appsDetails
+
     }
 }
 
