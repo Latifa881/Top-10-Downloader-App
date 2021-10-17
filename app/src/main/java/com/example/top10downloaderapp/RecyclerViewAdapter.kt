@@ -34,11 +34,11 @@ class RecyclerViewAdapter ( val details: ArrayList<Details>) :
         holder.itemView.apply {
             tvTitle.text = data.title
             tvTitle.setOnClickListener{
+                Log.d("MY TAG",data.summary.toString())
                 val builder = AlertDialog.Builder(context)
                 val dialogView = LayoutInflater.from(context).inflate(R.layout.dialogue_view, null)
                 builder.setView(dialogView)
                 dialogView.tvTitle.text=data.title
-
                 dialogView.tvSummary.text= data.summary
                 dialogView.tvSummary.visibility= View.GONE
                 dialogView.scrollable.visibility= View.GONE
@@ -46,7 +46,7 @@ class RecyclerViewAdapter ( val details: ArrayList<Details>) :
                     if(dialogView.tvSummary.visibility== View.VISIBLE){
                         dialogView.tvSummary.visibility= View.GONE
                         dialogView.scrollable.visibility= View.GONE
-                        Log.d("MY TAG",data.summary.toString())
+
                     }else{
                         dialogView.tvSummary.visibility= View.VISIBLE
                         dialogView.scrollable.visibility= View.VISIBLE
